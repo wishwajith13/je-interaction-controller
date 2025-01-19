@@ -45,7 +45,7 @@ public class CounselorSessionServiceIMPL implements CounselorSessionService {
     public String updateCounselorSession(CounselorSessionSaveDTO counselorSessionSaveDTO, int sessionId) {
         counselorSessionRepo.findById(sessionId).orElseThrow(() -> new NotFoundException("Counselor Session not found with ID: " + sessionId));
         CounselorSession counselorSession = modelMapper.map(counselorSessionSaveDTO, CounselorSession.class);
-//        counselorSession.setSessionId(sessionId);
+        counselorSession.setSessionId(sessionId);
         counselorSessionRepo.save(counselorSession);
         return "Counselor Session with Id: " + counselorSession.getSessionId() + " Updated";
     }
