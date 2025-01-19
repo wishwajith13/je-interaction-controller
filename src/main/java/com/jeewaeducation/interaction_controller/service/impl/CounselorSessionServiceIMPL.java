@@ -27,13 +27,13 @@ public class CounselorSessionServiceIMPL implements CounselorSessionService {
 
     @Override
     public String saveCounselorSession(CounselorSessionSaveDTO counselorSessionSaveDTO) {
-        CounselorSession counselorSession = new CounselorSession();
-        counselorSession.setSessionId(0);
-        counselorSession.setDate(counselorSessionSaveDTO.getDate());
-        counselorSession.setCounselorId(counselorSessionSaveDTO.getCounselorId());
-        counselorSession.setStudentId(counselorSessionSaveDTO.getStudentId());
-//        CounselorSession counselorSession = modelMapper.map(counselorSessionSaveDTO, CounselorSession.class);
-//        counselorSession.setCounselorId(0);
+//        CounselorSession counselorSession = new CounselorSession();
+//        counselorSession.setSessionId(0);
+//        counselorSession.setDate(counselorSessionSaveDTO.getDate());
+//        counselorSession.setCounselorId(counselorSessionSaveDTO.getCounselorId());
+//        counselorSession.setStudentId(counselorSessionSaveDTO.getStudentId());
+        CounselorSession counselorSession = modelMapper.map(counselorSessionSaveDTO, CounselorSession.class);
+//        counselorSession.setCounselorId(00);
         counselorSessionRepo.findById(counselorSession.getSessionId()).ifPresent(e -> {
             throw new DuplicateKeyException("Counselor Session already exists");
         });
