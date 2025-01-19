@@ -13,6 +13,6 @@ public class CounselorSessionGetDTO {
     private int sessionId;
     private Date date;
     private String description;
-    private String counselorId;
-    private String studentId;
+    private String counselor;
+    private String student;
 }

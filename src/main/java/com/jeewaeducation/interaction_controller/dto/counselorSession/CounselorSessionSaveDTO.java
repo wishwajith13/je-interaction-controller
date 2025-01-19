@@ -12,6 +12,6 @@ import java.sql.Date;
 public class CounselorSessionSaveDTO {
     private String description;
     private Date date;
-    private String counselorId;
-    private String studentId;
+    private String counselor;
+    private String student;
 }

@@ -21,8 +21,8 @@ public class CounselorSession {
     private Date date;
     @Column(name="description")
     private String description;
-    @Column(name="counselor_id")
-    private String counselorId;
-    @Column(name="student_id")
-    private String studentId;
+    @Column(name="counselor")
+    private String counselor;
+    @Column(name="student")
+    private String student;
 }
