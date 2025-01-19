@@ -1,6 +1,7 @@
 package com.jeewaeducation.interaction_controller.exception;
 
-import com.jeewaeducation.user_management.utility.StandardResponse;
+
+import com.jeewaeducation.interaction_controller.utility.StandardResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
