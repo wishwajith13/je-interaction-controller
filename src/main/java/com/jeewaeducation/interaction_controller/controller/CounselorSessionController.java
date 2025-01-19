@@ -27,7 +27,7 @@ public class CounselorSessionController {
         return new ResponseEntity<StandardResponse>(new StandardResponse(201,"Success",message), HttpStatus.CREATED);
     }
 
-    @PostMapping(
+    @PutMapping(
             path = {"/update/{id}"}
     )
     private ResponseEntity<StandardResponse> updateCounselorSession(@RequestBody CounselorSessionSaveDTO counselorSessionSaveDTO, @PathVariable int id){
@@ -35,7 +35,7 @@ public class CounselorSessionController {
         return new ResponseEntity<StandardResponse>(new StandardResponse(200,"Success",message), HttpStatus.OK);
     }
 
-    @PostMapping(
+    @DeleteMapping(
             path = {"/delete/{id}"}
     )
     private ResponseEntity<StandardResponse> deleteCounselorSession(@PathVariable int id){
@@ -43,7 +43,7 @@ public class CounselorSessionController {
         return new ResponseEntity<StandardResponse>(new StandardResponse(200,"Success",message), HttpStatus.OK);
     }
 
-    @PostMapping(
+    @GetMapping(
             path = {"/getall"}
     )
     private ResponseEntity<StandardResponse> getAllCounselorSessions(){
@@ -51,7 +51,7 @@ public class CounselorSessionController {
         return new ResponseEntity<StandardResponse>(new StandardResponse(200,"Success",message), HttpStatus.OK);
     }
 
-    @PostMapping(
+    @GetMapping(
             path = {"/get/{id}"}
     )
     private ResponseEntity<StandardResponse> getCounselorSession(@PathVariable int id){
