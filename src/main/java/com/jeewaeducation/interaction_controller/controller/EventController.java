@@ -18,35 +18,33 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-
-    @PostMapping("/save")
-    public ResponseEntity<StandardResponse> saveEvent (@RequestBody EventSaveDto eventSaveDto){
+    @PostMapping
+    public ResponseEntity<StandardResponse> saveEvent(@RequestBody EventSaveDto eventSaveDto) {
         String message = eventService.saveEvent(eventSaveDto);
-        return new ResponseEntity<StandardResponse>(new StandardResponse(201,"success",message), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(201, "success", message), HttpStatus.OK);
     }
 
-    @GetMapping("/get/{id}")
-    public ResponseEntity<StandardResponse> getEvents(@PathVariable int id){
+    @GetMapping("/{id}")
+    public ResponseEntity<StandardResponse> getEvents(@PathVariable int id) {
         EventGetDto event = eventService.getEvent(id);
-        return new ResponseEntity<StandardResponse>(new StandardResponse(200,"success",event), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "success", event), HttpStatus.OK);
     }
 
-    @GetMapping("/getall")
-    public ResponseEntity<StandardResponse> getAllEvents(){
-        return new ResponseEntity<StandardResponse>(new StandardResponse(200,"success",eventService.getAllEvents()), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<StandardResponse> getAllEvents() {
+        return new ResponseEntity<>(new StandardResponse(200, "success", eventService.getAllEvents()), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<StandardResponse> deleteEvent(@PathVariable int id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<StandardResponse> deleteEvent(@PathVariable int id) {
         String message = eventService.deleteEvent(id);
-        return new ResponseEntity<StandardResponse>(new StandardResponse(200,"success",message), HttpStatus.OK);
+        return new ResponseEntity<>(new StandardResponse(200, "success", message), HttpStatus.OK);
     }
 
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<StandardResponse>  updateEvent(@RequestBody EventSaveDto eventSaveDto,@PathVariable int id ){
-        String message = eventService.updateEvent(eventSaveDto,id);
-        return new ResponseEntity<>(new StandardResponse(201,"updated",message ),HttpStatus.ACCEPTED);
+    @PutMapping("/{id}")
+    public ResponseEntity<StandardResponse> updateEvent(@RequestBody EventSaveDto eventSaveDto, @PathVariable int id) {
+        String message = eventService.updateEvent(eventSaveDto, id);
+        return new ResponseEntity<>(new StandardResponse(201, "updated", message), HttpStatus.ACCEPTED);
     }
 }
 
