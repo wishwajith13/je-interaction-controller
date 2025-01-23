@@ -11,7 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 public class CounselorSessionSaveDTO {
     private String description;
-    private Date date;
+    private String date;
     private String counselor;
     private String student;
 }
