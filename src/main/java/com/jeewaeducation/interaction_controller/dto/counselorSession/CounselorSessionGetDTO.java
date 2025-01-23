@@ -11,7 +11,7 @@ import java.sql.Date;
 @NoArgsConstructor
 public class CounselorSessionGetDTO {
     private int sessionId;
-    private Date date;
+    private String date;
     private String description;
     private String counselor;
     private String student;
