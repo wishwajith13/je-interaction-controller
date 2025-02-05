@@ -5,14 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 
 @Entity
 @Table(name="counselor_session")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CounselorSession {
+public class CounselorSession extends BaseEntity{
     @Id
     @Column(name="session_id")
     @GeneratedValue(strategy = GenerationType.AUTO)

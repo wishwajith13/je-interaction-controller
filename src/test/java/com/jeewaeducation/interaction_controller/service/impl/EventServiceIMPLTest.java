@@ -55,7 +55,8 @@ class EventServiceIMPLTest {
         savedEvent.setDate("2025-02-10");
         savedEvent.setTime("10.00 AM");
 
-        //Mocking the behavior of the dependencies
+
+
         when(modelMapper.map(eventSaveDto, Event.class))
                 .thenReturn(event);
         when(eventRepo.findById(0))
@@ -293,6 +294,9 @@ class EventServiceIMPLTest {
         //Mocking the behavior of the dependencies
         when(eventRepo.existsById(eventId))
                 .thenReturn(true);
+        doNothing()
+                .when(eventRepo)
+                .deleteById(eventId);
 
         //Act
         String result = eventServiceIMPL.deleteEvent(eventId);
