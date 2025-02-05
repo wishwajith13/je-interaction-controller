@@ -8,20 +8,18 @@ import com.jeewaeducation.interaction_controller.exception.NotFoundException;
 import com.jeewaeducation.interaction_controller.repo.CounselorSessionRepo;
 import com.jeewaeducation.interaction_controller.service.CounselorSessionService;
 import com.jeewaeducation.interaction_controller.utility.mappers.CounselorSessionMapper;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class CounselorSessionServiceIMPL implements CounselorSessionService {
 
-    @Autowired
     private CounselorSessionRepo counselorSessionRepo;
-    @Autowired
     private ModelMapper modelMapper;
-    @Autowired
     private CounselorSessionMapper counselorSessionMapper;
 
 
@@ -46,7 +44,9 @@ public class CounselorSessionServiceIMPL implements CounselorSessionService {
 
     @Override
     public String deleteCounselorSession(int sessionId) {
-        counselorSessionRepo.findById(sessionId).orElseThrow(() -> new NotFoundException("Counselor Session not found with ID: " + sessionId));
+        counselorSessionRepo.findById(sessionId).orElseThrow(
+                () -> new NotFoundException("Counselor Session not found with ID: " + sessionId)
+        );
         counselorSessionRepo.deleteById(sessionId);
         return "Counselor Session with Id: " + sessionId + " Deleted";
     }
