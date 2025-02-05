@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CounselorSession {
+public class CounselorSession extends BaseEntity{
     @Id
     @Column(name="session_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
