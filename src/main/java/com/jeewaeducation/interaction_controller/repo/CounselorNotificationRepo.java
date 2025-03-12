@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface CounselorNotificationRepo extends JpaRepository<CounselorNotification,Integer> {
 
     List<CounselorNotification> findByCounselorIdAndSeenFalse(int counselorId);
+
+    boolean existsByCounselorId(int counselorId);
 }

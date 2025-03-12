@@ -22,39 +22,17 @@ public class RabbitMQListener {
     @Autowired
     private CounselorNotificationService counselorNotificationService;
 
-
-
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @RabbitListener(queues = "notification-queue")
     public void receiveNotification(String notificationData) {
         try {
-            Map<String, Object> notificationMsg = objectMapper.readValue(notificationData, Map.class);
 
-            int counselorId = Integer.parseInt((String) notificationMsg.get("counselorId"));
-            String message = (String) notificationMsg.get("message");
+            webSocketHandler.sendNotification(notificationData);
 
-            System.out.println("Counselor ID: " + counselorId);
-            System.out.println("Message: " + message);
-
-            CounselorNotificationSaveDTO counselorNotificationSaveDTO = new CounselorNotificationSaveDTO();
-            counselorNotificationSaveDTO.setCounselorId(counselorId);
-            counselorNotificationSaveDTO.setMessage(message);
-            counselorNotificationSaveDTO.setStudentId(652);
-
-            String saveCounselorNotification = counselorNotificationService.saveCounselorNotification(counselorNotificationSaveDTO);
-
-            System.out.println("Notification saved: " + saveCounselorNotification);
-
-            webSocketHandler.sendNotification(counselorId, message);
-            
         } catch (Exception e) {
             System.err.println("Error while parsing notification: " + e.getMessage());
         }
     }
 
 }
-
-
-
-

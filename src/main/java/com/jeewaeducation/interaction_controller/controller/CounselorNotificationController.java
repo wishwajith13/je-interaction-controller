@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/counselor-notification")
-@CrossOrigin
 public class CounselorNotificationController {
     @Autowired
     private CounselorNotificationService counselorNotificationService;

@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class CounselorNotificationServiceIMPL implements CounselorNotificationService {
+
     private CounselorNotificationRepo counselorNotificationRepo;
     private ModelMapper modelMapper;
     private CounselorNotificationMapper counselorNotificationMapper;
@@ -29,7 +30,6 @@ public class CounselorNotificationServiceIMPL implements CounselorNotificationSe
         counselorNotification.setStudentId(counselorNotificationSaveDTO.getStudentId());
         counselorNotification.setCreatedAt(LocalDateTime.now());
         counselorNotification.setSeen(false);
-//        counselorNotification.setId(0);
         counselorNotificationRepo.findById(counselorNotification.getId()).ifPresent(e -> {
             throw new NotFoundException("Counselor Notification already exists");
         });
@@ -41,10 +41,18 @@ public class CounselorNotificationServiceIMPL implements CounselorNotificationSe
     @Override
     public List<CounselorNotificationDTO> getUnseenCounselorNotificationsById(int counselorId) {
         List<CounselorNotification> counselorNotification = counselorNotificationRepo.findByCounselorIdAndSeenFalse(counselorId);
-//        List<CounselorNotification> counselorNotification = counselorNotificationRepo.findByCounselorId(counselorId);
         if (counselorNotification.isEmpty()) {
             throw new NotFoundException("No notifications found for counselor with ID: " + counselorId);
         }
         return counselorNotificationMapper.entityListToDtoList(counselorNotification);
+    }
+
+    @Override
+    public void markNotificationAsSeen(int id) {
+        CounselorNotification notification = counselorNotificationRepo.findById(id).orElse(null);
+        if (notification != null) {
+            notification.setSeen(true);
+            counselorNotificationRepo.save(notification);
+        }
     }
 }
