@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @EnableJpaRepositories
@@ -14,9 +13,7 @@ public interface CounselorNotificationRepo extends JpaRepository<CounselorNotifi
 
     List<CounselorNotification> findByCounselorIdAndSeenFalse(int counselorId);
 
-    boolean existsByCounselorId(int counselorId);
-
-    boolean existsByCounselorIdAndStudentId(int counselorId, int studentId);
-
     boolean existsByCounselorIdAndStudentIdAndSeenFalse(int counselorId, int studentId);
+
+    boolean existsByCounselorIdAndSeenFalse(int counselorId);
 }

@@ -1,19 +1,17 @@
 package com.jeewaeducation.interaction_controller.config;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jeewaeducation.interaction_controller.dto.counselorNotification.CounselorNotificationDTO;
 import com.jeewaeducation.interaction_controller.dto.counselorNotification.CounselorNotificationSaveDTO;
-import com.jeewaeducation.interaction_controller.entity.CounselorNotification;
 import com.jeewaeducation.interaction_controller.repo.CounselorNotificationRepo;
 import com.jeewaeducation.interaction_controller.service.CounselorNotificationService;
-import com.jeewaeducation.interaction_controller.service.impl.CounselorNotificationServiceIMPL;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +32,25 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        if (session.getUri() == null || session.getUri().getPath() == null) {
+            System.err.println("Session URI or path is null.");
+            return;
+        }
         String path = session.getUri().getPath();
         String[] parts = path.split("/");
-        int counselorId = Integer.parseInt(parts[parts.length - 1]);
+        int counselorId;
+
+        try {
+            counselorId = Integer.parseInt(parts[parts.length - 1]);
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid counselor ID in path: " + path);
+            return;
+        }
 
         sessions.put(counselorId, session);
         System.out.println("Counselor " + counselorId + " connected.");
 
-        if (!counselorNotificationRepo.existsByCounselorId(counselorId)) {
+        if (!counselorNotificationRepo.existsByCounselorIdAndSeenFalse(counselorId)) {
             return;
         }
 
@@ -76,14 +85,13 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    public void afterConnectionClosed(@NonNull WebSocketSession session,@NonNull CloseStatus status) {
         sessions.values().remove(session);
         System.out.println("Session closed: " + session.getId());
     }
 
     public void sendNotification(String notificationData) throws JsonProcessingException {
-        Map<String, Object> notificationMsg = objectMapper.readValue(notificationData, Map.class);
-
+        Map<String, Object> notificationMsg = objectMapper.readValue(notificationData, new TypeReference<>() {});
         int counselorId = Integer.parseInt((String) notificationMsg.get("counselorId"));
         int studentId = Integer.parseInt((String) notificationMsg.get("studentId"));
 

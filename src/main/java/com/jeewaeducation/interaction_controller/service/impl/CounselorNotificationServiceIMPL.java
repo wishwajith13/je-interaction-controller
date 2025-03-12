@@ -8,7 +8,6 @@ import com.jeewaeducation.interaction_controller.repo.CounselorNotificationRepo;
 import com.jeewaeducation.interaction_controller.service.CounselorNotificationService;
 import com.jeewaeducation.interaction_controller.utility.mappers.CounselorNotificationMapper;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,7 +18,7 @@ import java.util.List;
 public class CounselorNotificationServiceIMPL implements CounselorNotificationService {
 
     private CounselorNotificationRepo counselorNotificationRepo;
-    private ModelMapper modelMapper;
+//    private ModelMapper modelMapper;
     private CounselorNotificationMapper counselorNotificationMapper;
 
     @Override
