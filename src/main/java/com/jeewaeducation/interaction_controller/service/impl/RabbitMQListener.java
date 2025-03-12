@@ -19,17 +19,10 @@ public class RabbitMQListener {
     public RabbitMQListener(NotificationWebSocketHandler webSocketHandler) {
         this.webSocketHandler = webSocketHandler;
     }
-    @Autowired
-    private CounselorNotificationService counselorNotificationService;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     @RabbitListener(queues = "notification-queue")
     public void receiveNotification(String notificationData) {
         try {
-
             webSocketHandler.sendNotification(notificationData);
-
         } catch (Exception e) {
             System.err.println("Error while parsing notification: " + e.getMessage());
         }

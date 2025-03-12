@@ -74,9 +74,9 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
         Map<String, Object> notificationMsg = objectMapper.readValue(notificationData, Map.class);
 
         int counselorId = Integer.parseInt((String) notificationMsg.get("counselorId"));
-        String message = (String) notificationMsg.get("message");
+        int studentId = Integer.parseInt((String) notificationMsg.get("studentId"));
+        String message = "student " + studentId + " Assigned to you";
 
-//    public void sendNotification(int counselorId, String message) {
         WebSocketSession session = sessions.get(counselorId);
         if (session != null && session.isOpen()) {
             try {
@@ -90,7 +90,7 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
             CounselorNotificationSaveDTO counselorNotificationSaveDTO = new CounselorNotificationSaveDTO();
             counselorNotificationSaveDTO.setCounselorId(counselorId);
             counselorNotificationSaveDTO.setMessage(message);
-            counselorNotificationSaveDTO.setStudentId(652);
+            counselorNotificationSaveDTO.setStudentId(studentId);
 
             String saveCounselorNotification = counselorNotificationService.saveCounselorNotification(counselorNotificationSaveDTO);
 
