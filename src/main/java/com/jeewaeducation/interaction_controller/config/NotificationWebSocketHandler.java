@@ -14,6 +14,7 @@ import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +34,6 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // Extract counselorId from URL
         String path = session.getUri().getPath();
         String[] parts = path.split("/");
         int counselorId = Integer.parseInt(parts[parts.length - 1]);
@@ -41,18 +41,30 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
         sessions.put(counselorId, session);
         System.out.println("Counselor " + counselorId + " connected.");
 
-        if(!counselorNotificationRepo.existsByCounselorId(counselorId)) {
+        if (!counselorNotificationRepo.existsByCounselorId(counselorId)) {
             return;
         }
 
         List<CounselorNotificationDTO> unseenNotifications = counselorNotificationService.getUnseenCounselorNotificationsById(counselorId);
-        if(unseenNotifications.isEmpty()) {
+        if (unseenNotifications.isEmpty()) {
             return;
         }
 
+        ObjectMapper objectMapper = new ObjectMapper();
+
         for (CounselorNotificationDTO notification : unseenNotifications) {
-            session.sendMessage(new TextMessage(notification.getMessage()));
-            counselorNotificationService.markNotificationAsSeen(counselorId); // Mark as seen
+            int studentId = notification.getStudentId();
+
+            Map<String, Object> notificationData = new HashMap<>();
+            notificationData.put("counselorId", counselorId);
+            notificationData.put("studentId", studentId);
+            notificationData.put("message", "Student " + studentId + " Assigned to you");
+
+            String jsonResponse = objectMapper.writeValueAsString(notificationData);
+
+            session.sendMessage(new TextMessage(jsonResponse));
+
+            counselorNotificationService.markNotificationAsSeen(notification.getId());
         }
     }
 
@@ -70,26 +82,32 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
     }
 
     public void sendNotification(String notificationData) throws JsonProcessingException {
-
         Map<String, Object> notificationMsg = objectMapper.readValue(notificationData, Map.class);
 
         int counselorId = Integer.parseInt((String) notificationMsg.get("counselorId"));
         int studentId = Integer.parseInt((String) notificationMsg.get("studentId"));
-        String message = "student " + studentId + " Assigned to you";
+
+        Map<String, Object> responseMessage = new HashMap<>();
+        responseMessage.put("counselorId", counselorId);
+        responseMessage.put("studentId", studentId);
+        responseMessage.put("message", "Student " + studentId + " Assigned to you");
+
+        String jsonResponse = objectMapper.writeValueAsString(responseMessage);
 
         WebSocketSession session = sessions.get(counselorId);
         if (session != null && session.isOpen()) {
             try {
-                session.sendMessage(new TextMessage(message));
+                session.sendMessage(new TextMessage(jsonResponse)); // Send JSON string
                 System.out.println("Sent notification to counselor " + counselorId);
             } catch (Exception e) {
                 System.err.println("Error sending message: " + e.getMessage());
             }
         } else {
             System.out.println("Counselor " + counselorId + " is not connected.");
+
+            // Save the notification for later
             CounselorNotificationSaveDTO counselorNotificationSaveDTO = new CounselorNotificationSaveDTO();
             counselorNotificationSaveDTO.setCounselorId(counselorId);
-            counselorNotificationSaveDTO.setMessage(message);
             counselorNotificationSaveDTO.setStudentId(studentId);
 
             String saveCounselorNotification = counselorNotificationService.saveCounselorNotification(counselorNotificationSaveDTO);

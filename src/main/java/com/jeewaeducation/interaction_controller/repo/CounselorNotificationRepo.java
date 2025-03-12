@@ -15,4 +15,8 @@ public interface CounselorNotificationRepo extends JpaRepository<CounselorNotifi
     List<CounselorNotification> findByCounselorIdAndSeenFalse(int counselorId);
 
     boolean existsByCounselorId(int counselorId);
+
+    boolean existsByCounselorIdAndStudentId(int counselorId, int studentId);
+
+    boolean existsByCounselorIdAndStudentIdAndSeenFalse(int counselorId, int studentId);
 }

@@ -15,8 +15,6 @@ public class CounselorNotification {
     private int counselorId;
     @Column(name = "student_id" ,nullable = false)
     private int studentId;
-    @Column(name = "message" ,nullable = false)
-    private String message;
     @Column(name = "seen" ,nullable = false)
     private boolean seen;
     @Column(name = "created_at" ,nullable = false)

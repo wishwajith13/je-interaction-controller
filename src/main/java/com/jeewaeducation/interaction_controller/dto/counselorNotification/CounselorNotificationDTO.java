@@ -13,6 +13,5 @@ public class CounselorNotificationDTO {
     private int id;
     private int counselorId;
     private int studentId;
-    private String message;
     private LocalDateTime createdAt;
 }

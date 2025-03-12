@@ -24,9 +24,12 @@ public class CounselorNotificationServiceIMPL implements CounselorNotificationSe
 
     @Override
     public  String saveCounselorNotification(CounselorNotificationSaveDTO counselorNotificationSaveDTO) {
+        if(counselorNotificationRepo.existsByCounselorIdAndStudentIdAndSeenFalse(counselorNotificationSaveDTO.getCounselorId(), counselorNotificationSaveDTO.getStudentId())) {
+            return "Counselor Notification already exists";
+        }
+
         CounselorNotification counselorNotification = new  CounselorNotification();
         counselorNotification.setCounselorId(counselorNotificationSaveDTO.getCounselorId());
-        counselorNotification.setMessage(counselorNotificationSaveDTO.getMessage());
         counselorNotification.setStudentId(counselorNotificationSaveDTO.getStudentId());
         counselorNotification.setCreatedAt(LocalDateTime.now());
         counselorNotification.setSeen(false);
@@ -50,6 +53,7 @@ public class CounselorNotificationServiceIMPL implements CounselorNotificationSe
     @Override
     public void markNotificationAsSeen(int id) {
         CounselorNotification notification = counselorNotificationRepo.findById(id).orElse(null);
+        System.out.println("metana");
         if (notification != null) {
             notification.setSeen(true);
             counselorNotificationRepo.save(notification);

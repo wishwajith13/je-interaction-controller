@@ -12,5 +12,4 @@ import java.time.LocalDateTime;
 public class CounselorNotificationSaveDTO {
     private int counselorId;
     private int studentId;
-    private String message;
 }
