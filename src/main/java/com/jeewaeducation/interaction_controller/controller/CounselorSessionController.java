@@ -53,4 +53,20 @@ public class CounselorSessionController {
         CounselorSessionGetDTO message = counselorSessionService.getCounselorSession(id);
         return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
     }
+
+    @GetMapping(
+            path = {"/counselor/{counselorId}"}
+    )
+    private ResponseEntity<StandardResponse> getCounselorSessionsByCounselor(@PathVariable int counselorId) {
+        List<CounselorSessionGetDTO> message = counselorSessionService.getCounselorSessionsByCounselor(counselorId);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
+    }
+
+    @GetMapping(
+            path = {"/counselor/{counselorId}/student/{studentId}"}
+    )
+    private ResponseEntity<StandardResponse> getCounselorSessionsByCounselorAndStudent(@PathVariable int counselorId, @PathVariable int studentId) {
+        List<CounselorSessionGetDTO> message = counselorSessionService.getCounselorSessionsByCounselorAndStudent(counselorId, studentId);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
+    }
 }
