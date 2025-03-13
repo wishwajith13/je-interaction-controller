@@ -52,7 +52,6 @@ public class CounselorNotificationServiceIMPL implements CounselorNotificationSe
     @Override
     public void markNotificationAsSeen(int id) {
         CounselorNotification notification = counselorNotificationRepo.findById(id).orElse(null);
-        System.out.println("metana");
         if (notification != null) {
             notification.setSeen(true);
             counselorNotificationRepo.save(notification);
