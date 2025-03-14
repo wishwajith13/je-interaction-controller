@@ -15,5 +15,9 @@ public interface CounselorSessionService {
 
     CounselorSessionGetDTO getCounselorSession(int sessionId);
 
+    List<CounselorSessionGetDTO> getCounselorSessionsByCounselor(int counselorId);
+
+    List<CounselorSessionGetDTO> getCounselorSessionsByCounselorAndStudent(int counselorId, int studentId);
+
     List<CounselorSessionGetDTO> getAllCounselorSessions();
 }

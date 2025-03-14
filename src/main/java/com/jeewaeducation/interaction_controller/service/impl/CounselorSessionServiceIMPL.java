@@ -25,7 +25,12 @@ public class CounselorSessionServiceIMPL implements CounselorSessionService {
 
     @Override
     public String saveCounselorSession(CounselorSessionSaveDTO counselorSessionSaveDTO) {
-        CounselorSession counselorSession = modelMapper.map(counselorSessionSaveDTO, CounselorSession.class);
+        CounselorSession counselorSession = new CounselorSession();
+        counselorSession.setDescription(counselorSessionSaveDTO.getDescription());
+        counselorSession.setCounselorId(counselorSessionSaveDTO.getCounselorId());
+        counselorSession.setStudentId(counselorSessionSaveDTO.getStudentId());
+        counselorSession.setStartTime(counselorSessionSaveDTO.getStartTime());
+        counselorSession.setEndTime(counselorSessionSaveDTO.getEndTime());
         counselorSessionRepo.findById(counselorSession.getSessionId()).ifPresent(e -> {
             throw new DuplicateKeyException("Counselor Session already exists");
         });
@@ -63,6 +68,24 @@ public class CounselorSessionServiceIMPL implements CounselorSessionService {
         List<CounselorSession> counselorSessions = counselorSessionRepo.findAll();
         if (counselorSessions.isEmpty()) {
             throw new NotFoundException("No Counselor Sessions found");
+        }
+        return counselorSessionMapper.entityListToDtoList(counselorSessions);
+    }
+
+    @Override
+    public List<CounselorSessionGetDTO> getCounselorSessionsByCounselor(int counselorId) {
+        List<CounselorSession> counselorSessions = counselorSessionRepo.findByCounselorId(counselorId);
+        if (counselorSessions.isEmpty()) {
+            throw new NotFoundException("No Counselor Sessions found for Counselor ID: " + counselorId);
+        }
+        return counselorSessionMapper.entityListToDtoList(counselorSessions);
+    }
+
+    @Override
+    public List<CounselorSessionGetDTO> getCounselorSessionsByCounselorAndStudent(int counselorId, int studentId) {
+        List<CounselorSession> counselorSessions = counselorSessionRepo.findByCounselorIdAndStudentId(counselorId, studentId);
+        if (counselorSessions.isEmpty()) {
+            throw new NotFoundException("No Counselor Sessions found for Counselor ID: " + counselorId + " and Student ID: " + studentId);
         }
         return counselorSessionMapper.entityListToDtoList(counselorSessions);
     }
