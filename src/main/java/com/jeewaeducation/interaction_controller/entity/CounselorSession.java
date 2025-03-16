@@ -6,14 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.sql.Time;
-
 
 @Entity
-@Table(name="counselor_session")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name="counselor_session")
 public class CounselorSession extends BaseEntity{
     @Id
     @Column(name="session_id")
