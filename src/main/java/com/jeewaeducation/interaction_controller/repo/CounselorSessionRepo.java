@@ -16,4 +16,6 @@ public interface CounselorSessionRepo extends JpaRepository<CounselorSession, In
     List<CounselorSession> findByCounselorIdAndSessionId(int counselorId, int sessionId);
 
     List<CounselorSession> findByCounselorIdAndStudentId(int counselorId, int studentId);
+
+    List<CounselorSession> findByStudentId(int studentId);
 }
