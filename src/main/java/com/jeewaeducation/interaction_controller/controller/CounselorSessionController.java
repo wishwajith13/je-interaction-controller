@@ -63,6 +63,14 @@ public class CounselorSessionController {
     }
 
     @GetMapping(
+            path = {"/student/{studentId}"}
+    )
+    private ResponseEntity<StandardResponse> getCounselorSessionsByStudent(@PathVariable int studentId) {
+        List<CounselorSessionGetDTO> message = counselorSessionService.getCounselorSessionsByStudent(studentId);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
+    }
+
+    @GetMapping(
             path = {"/counselor/{counselorId}/student/{studentId}"}
     )
     private ResponseEntity<StandardResponse> getCounselorSessionsByCounselorAndStudent(@PathVariable int counselorId, @PathVariable int studentId) {

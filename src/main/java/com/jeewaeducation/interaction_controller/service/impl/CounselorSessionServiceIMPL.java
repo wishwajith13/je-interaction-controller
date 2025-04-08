@@ -82,6 +82,15 @@ public class CounselorSessionServiceIMPL implements CounselorSessionService {
     }
 
     @Override
+    public List<CounselorSessionGetDTO> getCounselorSessionsByStudent(int studentId) {
+        List<CounselorSession> counselorSessions = counselorSessionRepo.findByStudentId(studentId);
+        if (counselorSessions.isEmpty()) {
+            throw new NotFoundException("No Counselor Sessions found for Student ID: " + studentId);
+        }
+        return counselorSessionMapper.entityListToDtoList(counselorSessions);
+    }
+
+    @Override
     public List<CounselorSessionGetDTO> getCounselorSessionsByCounselorAndStudent(int counselorId, int studentId) {
         List<CounselorSession> counselorSessions = counselorSessionRepo.findByCounselorIdAndStudentId(counselorId, studentId);
         if (counselorSessions.isEmpty()) {
