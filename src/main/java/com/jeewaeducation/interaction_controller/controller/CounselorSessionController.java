@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/counselor-session")
-@CrossOrigin
 public class CounselorSessionController {
 
     @Autowired
@@ -52,6 +51,30 @@ public class CounselorSessionController {
     )
     private ResponseEntity<StandardResponse> getCounselorSession(@PathVariable int id) {
         CounselorSessionGetDTO message = counselorSessionService.getCounselorSession(id);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
+    }
+
+    @GetMapping(
+            path = {"/counselor/{counselorId}"}
+    )
+    private ResponseEntity<StandardResponse> getCounselorSessionsByCounselor(@PathVariable int counselorId) {
+        List<CounselorSessionGetDTO> message = counselorSessionService.getCounselorSessionsByCounselor(counselorId);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
+    }
+
+    @GetMapping(
+            path = {"/student/{studentId}"}
+    )
+    private ResponseEntity<StandardResponse> getCounselorSessionsByStudent(@PathVariable int studentId) {
+        List<CounselorSessionGetDTO> message = counselorSessionService.getCounselorSessionsByStudent(studentId);
+        return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
+    }
+
+    @GetMapping(
+            path = {"/counselor/{counselorId}/student/{studentId}"}
+    )
+    private ResponseEntity<StandardResponse> getCounselorSessionsByCounselorAndStudent(@PathVariable int counselorId, @PathVariable int studentId) {
+        List<CounselorSessionGetDTO> message = counselorSessionService.getCounselorSessionsByCounselorAndStudent(counselorId, studentId);
         return new ResponseEntity<>(new StandardResponse(200, "Success", message), HttpStatus.OK);
     }
 }
